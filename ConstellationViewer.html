@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Constellation Viewer</title>
+<style>
+body{
+    margin:0;
+    background:#050815;
+    color:white;
+    font-family:sans-serif;
+}
+
+canvas{
+    display:block;
+    width:100vw;
+    height:100vh;
+}
+</style>
+</head>
+<body>
+
+<canvas id="sky"></canvas>
+
+<script>
+
+const data = {
+  constellations: [
+    {
+      name:"The Lantern",
+      color:"#ffd166",
+      stars:[
+        {id:"A",x:120,y:140},
+        {id:"B",x:200,y:100},
+        {id:"C",x:280,y:140},
+        {id:"D",x:280,y:240},
+        {id:"E",x:120,y:240}
+      ],
+      connections:[
+        ["A","B"],
+        ["B","C"],
+        ["C","D"],
+        ["D","E"],
+        ["E","A"]
+      ]
+    }
+  ]
+};
+
+const canvas = document.getElementById("sky");
+const ctx = canvas.getContext("2d");
+
+function resize(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    draw();
+}
+
+window.addEventListener("resize",resize);
+
+function draw(){
+
+    ctx.fillStyle="#050815";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    for(const c of data.constellations){
+
+        const lookup={};
+
+        for(const star of c.stars){
+            lookup[star.id]=star;
+        }
+
+        ctx.strokeStyle=c.color;
+        ctx.lineWidth=2;
+
+        for(const [a,b] of c.connections){
+
+            const s1=lookup[a];
+            const s2=lookup[b];
+
+            ctx.beginPath();
+            ctx.moveTo(s1.x,s1.y);
+            ctx.lineTo(s2.x,s2.y);
+            ctx.stroke();
+        }
+
+        for(const star of c.stars){
+
+            ctx.fillStyle="white";
+
+            ctx.beginPath();
+            ctx.arc(star.x,star.y,5,0,Math.PI*2);
+            ctx.fill();
+        }
+
+        ctx.fillStyle=c.color;
+        ctx.font="16px sans-serif";
+        ctx.fillText(c.name,c.stars[0].x,c.stars[0].y-20);
+    }
+}
+
+resize();
+
+</script>
+</body>
+</html>
