@@ -127,7 +127,22 @@ for(let i=0;i<300;i++){
             ctx.lineTo(s2.x,s2.y);
             ctx.stroke();
         }
+        
+const nebula = ctx.createRadialGradient(
+    canvas.width*0.7,
+    canvas.height*0.3,
+    0,
+    canvas.width*0.7,
+    canvas.height*0.3,
+    300
+);
 
+nebula.addColorStop(0,"rgba(80,120,255,0.15)");
+nebula.addColorStop(0.5,"rgba(120,80,255,0.08)");
+nebula.addColorStop(1,"rgba(0,0,0,0)");
+
+ctx.fillStyle=nebula;
+ctx.fillRect(0,0,canvas.width,canvas.height);
         for(const star of c.stars){
 
             ctx.fillStyle="white";
