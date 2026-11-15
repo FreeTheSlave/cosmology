@@ -145,8 +145,10 @@ ctx.fillStyle=nebula;
 ctx.fillRect(0,0,canvas.width,canvas.height);
         for(const star of c.stars){
 
-            ctx.fillStyle="white";
-
+ctx.shadowBlur = 10;
+ctx.shadowColor = "white";
+ctx.fillStyle = "white";
+            
             ctx.beginPath();
             ctx.arc(star.x,star.y,5,0,Math.PI*2);
             ctx.fill();
