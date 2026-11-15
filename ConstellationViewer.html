@@ -24,51 +24,100 @@ canvas{
 
 <script>
 
-
 const WORLD_WIDTH = 4000;
 const WORLD_HEIGHT = 4000;
-    
-const data = {
-  constellations: [
-    {
-      name:"The Lantern",
-      color:"#ffd166",
-      stars:[
-        {id:"A",x:120,y:140},
-        {id:"B",x:200,y:100},
-        {id:"C",x:280,y:140},
-        {id:"D",x:280,y:240},
-        {id:"E",x:120,y:240}
-      ],
-      connections:[
-        ["A","B"],
-        ["B","C"],
-        ["C","D"],
-        ["D","E"],
-        ["E","A"]
-      ]
-    },
 
-    {
-      name:"The Serpent",
-      color:"#06d6a0",
-      stars:[
-        {id:"A",x:450,y:150},
-        {id:"B",x:520,y:180},
-        {id:"C",x:600,y:150},
-        {id:"D",x:660,y:210},
-        {id:"E",x:740,y:190},
-        {id:"F",x:820,y:240}
-      ],
-      connections:[
-        ["A","B"],
-        ["B","C"],
-        ["C","D"],
-        ["D","E"],
-        ["E","F"]
-      ]
-    }
-  ]
+let cameraX = 0;
+let cameraY = 0;
+
+const backgroundStars = [];
+
+for(let i=0;i<3000;i++){
+    backgroundStars.push({
+        x:Math.random()*WORLD_WIDTH,
+        y:Math.random()*WORLD_HEIGHT,
+        size:Math.random()*2
+    });
+}
+
+const data = {
+    constellations:[
+
+        {
+            name:"The Lantern",
+            color:"#ffd166",
+            stars:[
+                {id:"A",x:300,y:300},
+                {id:"B",x:450,y:210},
+                {id:"C",x:600,y:300},
+                {id:"D",x:600,y:500},
+                {id:"E",x:300,y:500}
+            ],
+            connections:[
+                ["A","B"],
+                ["B","C"],
+                ["C","D"],
+                ["D","E"],
+                ["E","A"]
+            ]
+        },
+
+        {
+            name:"The Serpent",
+            color:"#06d6a0",
+            stars:[
+                {id:"A",x:2200,y:900},
+                {id:"B",x:2360,y:1000},
+                {id:"C",x:2560,y:900},
+                {id:"D",x:2760,y:1100},
+                {id:"E",x:3000,y:1000},
+                {id:"F",x:3200,y:1200}
+            ],
+            connections:[
+                ["A","B"],
+                ["B","C"],
+                ["C","D"],
+                ["D","E"],
+                ["E","F"]
+            ]
+        },
+
+        {
+            name:"The Crown",
+            color:"#ff66aa",
+            stars:[
+                {id:"A",x:1000,y:2000},
+                {id:"B",x:1150,y:1800},
+                {id:"C",x:1300,y:1950},
+                {id:"D",x:1450,y:1800},
+                {id:"E",x:1600,y:2000}
+            ],
+            connections:[
+                ["A","B"],
+                ["B","C"],
+                ["C","D"],
+                ["D","E"]
+            ]
+        },
+
+        {
+            name:"The Anvil",
+            color:"#66ccff",
+            stars:[
+                {id:"A",x:3200,y:2600},
+                {id:"B",x:3400,y:2600},
+                {id:"C",x:3600,y:2600},
+                {id:"D",x:3400,y:2800},
+                {id:"E",x:3400,y:3000}
+            ],
+            connections:[
+                ["A","B"],
+                ["B","C"],
+                ["B","D"],
+                ["D","E"]
+            ]
+        }
+    ]
 };
 
 const canvas = document.getElementById("sky");
@@ -77,136 +126,17 @@ const ctx = canvas.getContext("2d");
 function resize(){
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    let cameraX = 0;
-    let cameraY = 0;
     draw();
 }
 
 window.addEventListener("resize",resize);
 
-function draw(){
-
-const gradient = ctx.createLinearGradient(
-    0,0,
-    canvas.width,canvas.height
-);
-
-gradient.addColorStop(0,"#000814");
-gradient.addColorStop(0.5,"#040b25");
-gradient.addColorStop(1,"#020510");
-
-ctx.fillStyle = gradient;
-ctx.fillRect(0,0,canvas.width,canvas.height);
-
-for(let i=0;i<300;i++){
-
-    const x=Math.random()*canvas.width;
-    const y=Math.random()*canvas.height;
-
-    const size=Math.random()*2;
-
-    ctx.fillStyle="rgba(255,255,255,"+(Math.random()*0.8)+")";
-
-    ctx.beginPath();
-    ctx.arc(x,y,size,0,Math.PI*2);
-    ctx.fill();
-}
-
-    for(const c of data.constellations){
-
-        const lookup={};
-
-        for(const star of c.stars){
-            lookup[star.id]=star;
-        }
-
-        ctx.strokeStyle=c.color;
-        ctx.lineWidth=2;
-
-        for(const [a,b] of c.connections){
-
-            const s1=lookup[a];
-            const s2=lookup[b];
-
-            ctx.beginPath();
-            ctx.moveTo(
-            s1.x - cameraX,
-            s1.y - cameraY
-        );
-            ctx.lineTo(
-            s2.x - cameraX,
-            s2.y - cameraY
-        );
-            ctx.stroke();
-        }
-        
-const nebula = ctx.createRadialGradient(
-    canvas.width*0.7,
-    canvas.height*0.3,
-    0,
-    canvas.width*0.7,
-    canvas.height*0.3,
-    300
-);
-
 window.addEventListener("keydown",(e)=>{
 
-    if(e.key==="ArrowLeft") cameraX -= 50;
-    if(e.key==="ArrowRight") cameraX += 50;
+    if(e.key==="ArrowLeft") cameraX -= 100;
+    if(e.key==="ArrowRight") cameraX += 100;
 
-    if(e.key==="ArrowUp") cameraY -= 50;
-    if(e.key==="ArrowDown") cameraY += 50;
-
-    draw();
-});
-
-Lantern
-x: 300
-y: 300
-
-Serpent
-x: 2200
-y: 900
-
-Crown
-x: 900
-y: 1700
-
-Anvil
-x: 3200
-y: 2400
-
-Dragon
-x: 1500
-y: 3100
-
-nebula.addColorStop(0,"rgba(80,120,255,0.15)");
-nebula.addColorStop(0.5,"rgba(120,80,255,0.08)");
-nebula.addColorStop(1,"rgba(0,0,0,0)");
-
-ctx.fillStyle=nebula;
-ctx.fillRect(0,0,canvas.width,canvas.height);
-        for(const star of c.stars){
-
-ctx.shadowBlur = 10;
-ctx.shadowColor = "white";
-ctx.fillStyle = "white";
-
-ctx.shadowBlur = 0;
-            
-            ctx.beginPath();
-            ctx.arc(star.x,star.y,5,0,Math.PI*2);
-            ctx.fill();
-        }
-
-        ctx.fillStyle=c.color;
-        ctx.font="16px sans-serif";
-        ctx.fillText(c.name,c.stars[0].x,c.stars[0].y-20);
-    }
-}
-
-resize();
-
+    if(e.key==="ArrowUp") cameraY
 </script>
 </body>
 </html>
