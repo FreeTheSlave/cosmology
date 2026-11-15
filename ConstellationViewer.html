@@ -80,8 +80,31 @@ window.addEventListener("resize",resize);
 
 function draw(){
 
-    ctx.fillStyle="#050815";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
+const gradient = ctx.createLinearGradient(
+    0,0,
+    canvas.width,canvas.height
+);
+
+gradient.addColorStop(0,"#000814");
+gradient.addColorStop(0.5,"#040b25");
+gradient.addColorStop(1,"#020510");
+
+ctx.fillStyle = gradient;
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+for(let i=0;i<300;i++){
+
+    const x=Math.random()*canvas.width;
+    const y=Math.random()*canvas.height;
+
+    const size=Math.random()*2;
+
+    ctx.fillStyle="rgba(255,255,255,"+(Math.random()*0.8)+")";
+
+    ctx.beginPath();
+    ctx.arc(x,y,size,0,Math.PI*2);
+    ctx.fill();
+}
 
     for(const c of data.constellations){
 
