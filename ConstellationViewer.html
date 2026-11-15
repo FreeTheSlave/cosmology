@@ -11,7 +11,6 @@ body{
     font-family:sans-serif;
 }
 
-
 canvas{
     display:block;
     width:100vw;
@@ -21,18 +20,10 @@ canvas{
 </head>
 <body>
 
-
 <canvas id="sky"></canvas>
-
 
 <script>
 
-
-
-
-const WORLD_WIDTH = 4000;
-const WORLD_HEIGHT = 4000;
-    
 const data = {
   constellations: [
     {
@@ -53,7 +44,6 @@ const data = {
         ["E","A"]
       ]
     },
-
 
     {
       name:"The Serpent",
@@ -77,91 +67,64 @@ const data = {
   ]
 };
 
-
 const canvas = document.getElementById("sky");
 const ctx = canvas.getContext("2d");
-
 
 function resize(){
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    let cameraX = 0;
-    let cameraY = 0;
     draw();
 }
 
-
 window.addEventListener("resize",resize);
 
-
 function draw(){
-
 
 const gradient = ctx.createLinearGradient(
     0,0,
     canvas.width,canvas.height
 );
 
-
 gradient.addColorStop(0,"#000814");
 gradient.addColorStop(0.5,"#040b25");
 gradient.addColorStop(1,"#020510");
 
-
 ctx.fillStyle = gradient;
 ctx.fillRect(0,0,canvas.width,canvas.height);
 
-
 for(let i=0;i<300;i++){
-
 
     const x=Math.random()*canvas.width;
     const y=Math.random()*canvas.height;
 
-
     const size=Math.random()*2;
 
-
     ctx.fillStyle="rgba(255,255,255,"+(Math.random()*0.8)+")";
-
 
     ctx.beginPath();
     ctx.arc(x,y,size,0,Math.PI*2);
     ctx.fill();
 }
 
-
     for(const c of data.constellations){
 
-
         const lookup={};
-
 
         for(const star of c.stars){
             lookup[star.id]=star;
         }
 
-
         ctx.strokeStyle=c.color;
         ctx.lineWidth=2;
 
-
         for(const [a,b] of c.connections){
-
 
             const s1=lookup[a];
             const s2=lookup[b];
 
-
             ctx.beginPath();
-            ctx.moveTo(
-            s1.x - cameraX,
-            s1.y - cameraY
-        );
-            ctx.lineTo(
-            s2.x - cameraX,
-            s2.y - cameraY
-        );
+            ctx.moveTo(s1.x,s1.y);
+            ctx.lineTo(s2.x,s2.y);
             ctx.stroke();
         }
         
@@ -174,35 +137,17 @@ const nebula = ctx.createRadialGradient(
     300
 );
 
-
-window.addEventListener("keydown",(e)=>{
-
-
-    if(e.key==="ArrowLeft") cameraX -= 50;
-    if(e.key==="ArrowRight") cameraX += 50;
-
-
-    if(e.key==="ArrowUp") cameraY -= 50;
-    if(e.key==="ArrowDown") cameraY += 50;
-
-
-    draw();
-});
-
 nebula.addColorStop(0,"rgba(80,120,255,0.15)");
 nebula.addColorStop(0.5,"rgba(120,80,255,0.08)");
 nebula.addColorStop(1,"rgba(0,0,0,0)");
-
 
 ctx.fillStyle=nebula;
 ctx.fillRect(0,0,canvas.width,canvas.height);
         for(const star of c.stars){
 
-
 ctx.shadowBlur = 10;
 ctx.shadowColor = "white";
-ctx.fillStyle = "white";a
-
+ctx.fillStyle = "white";
 
 ctx.shadowBlur = 0;
             
@@ -211,19 +156,14 @@ ctx.shadowBlur = 0;
             ctx.fill();
         }
 
-
         ctx.fillStyle=c.color;
         ctx.font="16px sans-serif";
         ctx.fillText(c.name,c.stars[0].x,c.stars[0].y-20);
     }
 }
 
-
 resize();
-
 
 </script>
 </body>
 </html>
-
-
