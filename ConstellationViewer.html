@@ -24,6 +24,10 @@ canvas{
 
 <script>
 
+
+const WORLD_WIDTH = 4000;
+const WORLD_HEIGHT = 4000;
+    
 const data = {
   constellations: [
     {
@@ -73,6 +77,8 @@ const ctx = canvas.getContext("2d");
 function resize(){
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    let cameraX = 0;
+    let cameraY = 0;
     draw();
 }
 
@@ -123,8 +129,14 @@ for(let i=0;i<300;i++){
             const s2=lookup[b];
 
             ctx.beginPath();
-            ctx.moveTo(s1.x,s1.y);
-            ctx.lineTo(s2.x,s2.y);
+            ctx.moveTo(
+            s1.x - cameraX,
+            s1.y - cameraY
+        );
+            ctx.lineTo(
+            s2.x - cameraX,
+            s2.y - cameraY
+        );
             ctx.stroke();
         }
         
@@ -136,6 +148,37 @@ const nebula = ctx.createRadialGradient(
     canvas.height*0.3,
     300
 );
+
+window.addEventListener("keydown",(e)=>{
+
+    if(e.key==="ArrowLeft") cameraX -= 50;
+    if(e.key==="ArrowRight") cameraX += 50;
+
+    if(e.key==="ArrowUp") cameraY -= 50;
+    if(e.key==="ArrowDown") cameraY += 50;
+
+    draw();
+});
+
+Lantern
+x: 300
+y: 300
+
+Serpent
+x: 2200
+y: 900
+
+Crown
+x: 900
+y: 1700
+
+Anvil
+x: 3200
+y: 2400
+
+Dragon
+x: 1500
+y: 3100
 
 nebula.addColorStop(0,"rgba(80,120,255,0.15)");
 nebula.addColorStop(0.5,"rgba(120,80,255,0.08)");
