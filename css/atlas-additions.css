@@ -1,0 +1,18 @@
+/* Add this to the end of css/atlas.css.
+   It guarantees that the map is absent from lore sections and lets the archive use the full content width. */
+.map-section[hidden] {
+  display: none !important;
+}
+.main-layout.lore-mode {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 1180px;
+}
+.main-layout.lore-mode .detail-panel {
+  width: 100%;
+  min-height: 420px;
+}
+@media (max-width: 850px) {
+  .main-layout.lore-mode {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
