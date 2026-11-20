@@ -41,6 +41,19 @@ let lastMouseY = 0;
 
 const WORLD_WIDTH = 5000;
 
+const backgroundStars = [];
+
+for(let i = 0; i < 2000; i++){
+
+    backgroundStars.push({
+        x: Math.random() * WORLD_WIDTH,
+        y: Math.random() * 4000,
+        size: Math.random() * 2,
+        alpha: Math.random() * 0.8
+    });
+
+}
+
 const data = {
     constellations:[
 
@@ -159,28 +172,29 @@ function draw(){
         canvas.height
     );
 
-    for(let i=0;i<300;i++){
+for(const star of backgroundStars){
 
-        const x = Math.random()*canvas.width;
-        const y = Math.random()*canvas.height;
-        const size = Math.random()*2;
+    const offsets =
+        [-WORLD_WIDTH, 0, WORLD_WIDTH];
+
+    for(const offset of offsets){
 
         ctx.fillStyle =
-            "rgba(255,255,255," +
-            (Math.random()*0.8) +
-            ")";
+            "rgba(255,255,255," + star.alpha + ")";
 
         ctx.beginPath();
+
         ctx.arc(
-            x,
-            y,
-            size,
+            star.x + offset - cameraX,
+            star.y - cameraY,
+            star.size,
             0,
-            Math.PI*2
+            Math.PI * 2
         );
+
         ctx.fill();
     }
-
+}
     const nebula = ctx.createRadialGradient(
         canvas.width*0.7,
         canvas.height*0.3,
