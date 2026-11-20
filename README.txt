@@ -1,20 +1,16 @@
-# Erithael Atlas update
+THE FORCES OF ERITHAEL — ATLAS UPDATE
 
-This update narrows the navigation to five sections:
+This update fixes the map visibility issue. The map is now explicitly hidden
+by a dedicated stylesheet whenever a non-map section is selected.
 
-- Star Map
-- Planes
-- Magic
-- Deities
-- Sites of Power
+INSTALLATION
+1. Replace index.html with the one in this archive.
+2. Replace js/app.js with the one in this archive.
+3. Replace data/lore.js with the one in this archive.
+4. Add css/atlas-additions.css to your existing css folder.
 
-Replace the matching files in your project:
-- `index.html`
-- `js/app.js`
-- `data/lore.js`
+IMPORTANT: index.html now loads css/atlas-additions.css automatically, so you
+do NOT need to copy its contents into atlas.css. Keep your existing
+css/atlas.css, js/starMap.js, and data/constellations.js unchanged.
 
-Append the contents of `css/atlas-additions.css` to the end of your existing `css/atlas.css`.
-
-Keep your existing `data/constellations.js` and `js/starMap.js`; they do not need to change.
-
-The map is now explicitly hidden in every lore section. The lore panel expands to use the available page width.
+The top-level sections are Star Map, Planes, Magic, Deities, and Sites of Power.
