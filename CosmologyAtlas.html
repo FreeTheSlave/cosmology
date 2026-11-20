@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Cosmology Atlas</title>
+
+<style>
+
+html,body{
+    margin:0;
+    height:100%;
+    overflow:hidden;
+    background:#050815;
+    color:#fff;
+    font-family:Segoe UI,sans-serif;
+}
+
+#topBar{
+    position:absolute;
+    top:0;
+    left:0;
+    right:320px;
+    height:50px;
+    background:rgba(0,0,0,.5);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:0 15px;
+    z-index:10;
+}
+
+#bottomBar{
+    position:absolute;
+    bottom:0;
+    left:0;
+    right:320px;
+    height:50px;
+    background:rgba(0,0,0,.5);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:0 15px;
+    z-index:10;
+}
+
+button{
+    background:#182748;
+    color:white;
+    border:none;
+    padding:8px 14px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#304a7d;
+}
+
+#searchBar{
+    margin-left:auto;
+}
+
+#searchBox{
+    padding:6px;
+    width:200px;
+}
+
+#sky{
+    position:absolute;
+    inset:0;
+}
+
+#infoPanel{
+    position:absolute;
+    top:0;
+    right:0;
+    width:320px;
+    bottom:0;
+    background:#08101f;
+    border-left:1px solid #29364f;
+    overflow:auto;
+    padding:20px;
+    box-sizing:border-box;
+}
+
+#infoPanel h2{
+    margin-top:0;
+}
+
+.section{
+    margin-bottom:18px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="topBar">
+
+    <button onclick="showSection('magic')">
+        Magic
+    </button>
+
+    <button onclick="showSection('creation')">
+        Creation
+    </button>
+
+    <button onclick="showSection('planes')">
+        Planes
+    </button>
+
+    <button onclick="showSection('forces')">
+        Cosmic Forces
+    </button>
+
+    <div id="searchBar">
+
+        <input
+            id="searchBox"
+            placeholder="Search..."
+            oninput="searchConstellations()">
+
+    </div>
+
+</div>
+
+<canvas id="sky"></canvas>
+
+<div id="bottomBar">
+
+    <button onclick="showSection('gods')">
+        Gods
+    </button>
+
+    <button onclick="showSection('titans')">
+        Titans
+    </button>
+
+    <button onclick="showSection('spirits')">
+        Spirits
+    </button>
+
+    <button onclick="showSection('empires')">
+        Empires
+    </button>
+
+</div>
+
+<div id="infoPanel">
+
+    <h2>Cosmology Atlas</h2>
+
+    <p>
+        Select a constellation.
+    </p>
+
+</div>
+
+<script>
+
+const lore = {
+
+    Lantern : {
+
+        title:"The Lantern",
+
+        season:"Winter",
+
+        blessing:"Guidance",
+
+        deity:"Aureon",
+
+        description:
+            "The Lantern marks the path of the First Wanderer."
+
+    },
+
+    Serpent : {
+
+        title:"The Serpent",
+
+        season:"Spring",
+
+        blessing:"Transformation",
+
+        deity:"Nesh",
+
+        description:
+            "The Serpent coils through the heavens and symbolizes rebirth."
+
+    },
+
+    Crown : {
+
+        title:"The Crown",
+
+        season:"Summer",
+
+        blessing:"Rule",
+
+        deity:"Ilyra",
+
+        description:
+            "The Crown is the celestial emblem of kingship."
+    }
+
+};
+
+function selectConstellation(name){
+
+    const c = lore[name];
+
+    if(!c) return;
+
+    document.getElementById("infoPanel").innerHTML = `
+        <h2>${c.title}</h2>
+
+        <div class="section">
+            <b>Season</b><br>
+            ${c.season}
+        </div>
+
+        <div class="section">
+            <b>Blessing</b><br>
+            ${c.blessing}
+        </div>
+
+        <div class="section">
+            <b>Associated Deity</b><br>
+            ${c.deity}
+        </div>
+
+        <div class="section">
+            ${c.description}
+        </div>
+    `;
+}
+
+function showSection(section){
+
+    const panel =
+        document.getElementById("infoPanel");
+
+    if(section === "magic"){
+        panel.innerHTML = `
+            <h2>Magic</h2>
+            <p>Describe the source of magic.</p>
+        `;
+    }
+
+    if(section === "planes"){
+        panel.innerHTML = `
+            <h2>Planes</h2>
+            <p>Describe the planes of existence.</p>
+        `;
+    }
+
+    if(section === "creation"){
+        panel.innerHTML = `
+            <h2>Creation</h2>
+            <p>The creation myth goes here.</p>
+        `;
+    }
+
+    if(section === "forces"){
+        panel.innerHTML = `
+            <h2>Cosmic Forces</h2>
+            <p>Ancient cosmic powers.</p>
+        `;
+    }
+
+    if(section === "gods"){
+        panel.innerHTML = `
+            <h2>Gods</h2>
+            <p>Primary pantheon.</p>
+        `;
+    }
+
+    if(section === "titans"){
+        panel.innerHTML = `
+            <h2>Titans</h2>
+            <p>Primordial beings.</p>
+        `;
+    }
+
+    if(section === "spirits"){
+        panel.innerHTML = `
+            <h2>Spirits</h2>
+            <p>Lesser divine beings.</p>
+        `;
+    }
+
+    if(section === "empires"){
+        panel.innerHTML = `
+            <h2>Empires</h2>
+            <p>Mortal powers.</p>
+        `;
+    }
+
+}
+
+function searchConstellations(){
+
+    const term =
+        document
+            .getElementById("searchBox")
+            .value
+            .toLowerCase();
+
+    for(const key in lore){
+
+        if(
+            key.toLowerCase()
+                .includes(term)
+        ){
+            selectConstellation(key);
+            return;
+        }
+    }
+
+}
+
+</script>
+
+</body>
+</html>
