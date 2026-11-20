@@ -23,7 +23,13 @@ canvas{
 <canvas id="sky"></canvas>
 
 <script>
+let cameraX = 0;
+let cameraY = 0;
 
+let isDragging = false;
+let lastMouseX = 0;
+let lastMouseY = 0;
+    
 const data = {
   constellations: [
     {
@@ -96,6 +102,29 @@ function resize(){
 
 window.addEventListener("resize",resize);
 
+canvas.addEventListener("mousedown",(e)=>{
+    isDragging = true;
+    lastMouseX = e.clientX;
+    lastMouseY = e.clientY;
+});
+
+window.addEventListener("mouseup",()=>{
+    isDragging = false;
+});
+
+window.addEventListener("mousemove",(e)=>{
+
+    if(!isDragging) return;
+
+    cameraX -= e.clientX - lastMouseX;
+    cameraY -= e.clientY - lastMouseY;
+
+    lastMouseX = e.clientX;
+    lastMouseY = e.clientY;
+
+    draw();
+});
+    
 function draw(){
 
 const gradient = ctx.createLinearGradient(
