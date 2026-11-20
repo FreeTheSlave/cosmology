@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#050815">
+  <title>Star Map Atlas</title>
+  <link rel="stylesheet" href="css/atlas.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" data-view="map" aria-label="Star Map Atlas home">
+        <span class="brand-mark">✦</span>
+        <span><strong>THE CELESTIAL ATLAS</strong><small>A record of the known heavens</small></span>
+      </a>
+      <div class="top-actions">
+        <label class="search-wrap">
+          <span aria-hidden="true">⌕</span>
+          <input id="searchInput" type="search" placeholder="Search the atlas…" autocomplete="off">
+          <kbd>/</kbd>
+        </label>
+        <button class="icon-button" id="helpButton" type="button" title="Controls" aria-label="Show controls">?</button>
+      </div>
+    </header>
+
+    <nav class="primary-nav" aria-label="Atlas sections">
+      <button class="nav-link active" data-view="map">Star Map</button>
+      <button class="nav-link" data-view="magic">Magic</button>
+      <button class="nav-link" data-view="creation">Creation</button>
+      <button class="nav-link" data-view="planes">Planes</button>
+      <button class="nav-link" data-view="forces">Forces</button>
+      <span class="nav-divider"></span>
+      <button class="nav-link" data-view="gods">Gods</button>
+      <button class="nav-link" data-view="titans">Titans</button>
+      <button class="nav-link" data-view="spirits">Spirits</button>
+      <button class="nav-link" data-view="empires">Empires</button>
+    </nav>
+
+    <main class="main-layout">
+      <section class="map-section" id="mapSection" aria-label="Interactive star map">
+        <div class="map-heading">
+          <div>
+            <p class="eyebrow">THE NIGHT SKY</p>
+            <h1>Celestial Chart</h1>
+          </div>
+          <div class="map-tools">
+            <button id="resetView" class="subtle-button" type="button">Reset view</button>
+            <span class="map-hint">Drag to travel · Select a constellation</span>
+          </div>
+        </div>
+        <div class="canvas-wrap">
+          <canvas id="sky" aria-label="Star map. Drag to pan and click a constellation to inspect it."></canvas>
+          <div class="map-coordinates" id="coordinates">SECTOR 00 · 00</div>
+          <div class="map-legend"><span class="legend-dot"></span> Known constellations <span class="legend-line"></span> Star paths</div>
+        </div>
+        <div class="mobile-selection" id="mobileSelection">Select a constellation to view its record.</div>
+      </section>
+
+      <aside class="detail-panel" id="detailPanel" aria-live="polite">
+        <div class="panel-topline"><span class="eyebrow">ATLAS ENTRY</span><span class="record-status">RECORDED</span></div>
+        <div id="detailContent">
+          <div class="empty-emblem">✧</div>
+          <p class="eyebrow">WELCOME, OBSERVER</p>
+          <h2>The Heavens Await</h2>
+          <p class="muted">Choose a constellation from the chart, or use the navigation above to explore the records of the known world.</p>
+          <div class="panel-rule"></div>
+          <h3>Chart notes</h3>
+          <p class="small muted">The map can be dragged horizontally and vertically. Its starfield wraps around the eastern and western horizons.</p>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="statusbar">
+      <span>CELESTIAL ATLAS <span class="status-separator">/</span> FIELD EDITION</span>
+      <span id="statusText">Awaiting selection</span>
+      <span>ARCHIVE VERSION 1.0</span>
+    </footer>
+  </div>
+
+  <dialog id="helpDialog" class="help-dialog">
+    <form method="dialog">
+      <button class="dialog-close" aria-label="Close">×</button>
+      <p class="eyebrow">FIELD GUIDE</p>
+      <h2>Chart controls</h2>
+      <ul>
+        <li><strong>Drag</strong> the chart to pan across the heavens.</li>
+        <li><strong>Click</strong> a named constellation to open its record.</li>
+        <li><strong>Search</strong> for a constellation or lore entry using the field above.</li>
+        <li><strong>Escape</strong> closes this guide or clears search focus.</li>
+        <li><strong>Reset view</strong> returns the chart to its starting position.</li>
+      </ul>
+      <p class="small muted">On touchscreens, drag with one finger and tap a constellation to select it.</p>
+    </form>
+  </dialog>
+
+  <script src="data/constellations.js"></script>
+  <script src="data/lore.js"></script>
+  <script src="js/starMap.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
