@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Constellation Viewer</title>
+
 <style>
 body{
     margin:0;
+    overflow:hidden;
     background:#050815;
     color:white;
     font-family:sans-serif;
@@ -15,14 +17,21 @@ canvas{
     display:block;
     width:100vw;
     height:100vh;
+    cursor:grab;
+}
+
+canvas:active{
+    cursor:grabbing;
 }
 </style>
+
 </head>
 <body>
 
 <canvas id="sky"></canvas>
 
 <script>
+
 let cameraX = 0;
 let cameraY = 0;
 
@@ -30,68 +39,69 @@ let isDragging = false;
 let lastMouseX = 0;
 let lastMouseY = 0;
 
-
 const WORLD_WIDTH = 5000;
-    
+
 const data = {
-  constellations: [
-    {
-      name:"The Lantern",
-      color:"#ffd166",
-      stars:[
-        {id:"A",x:120,y:140},
-        {id:"B",x:200,y:100},
-        {id:"C",x:280,y:140},
-        {id:"D",x:280,y:240},
-        {id:"E",x:120,y:240}
-      ],
-      connections:[
-        ["A","B"],
-        ["B","C"],
-        ["C","D"],
-        ["D","E"],
-        ["E","A"]
-      ]
-    },
+    constellations:[
 
-      {
-  name:"The Crown",
-  color:"#ff66cc",
-  stars:[
-    {id:"A",x:900,y:1800},
-    {id:"B",x:1050,y:1600},
-    {id:"C",x:1200,y:1750},
-    {id:"D",x:1350,y:1600},
-    {id:"E",x:1500,y:1800}
-  ],
-  connections:[
-    ["A","B"],
-    ["B","C"],
-    ["C","D"],
-    ["D","E"]
-  ]
-},
+        {
+            name:"The Lantern",
+            color:"#ffd166",
+            stars:[
+                {id:"A",x:120,y:140},
+                {id:"B",x:200,y:100},
+                {id:"C",x:280,y:140},
+                {id:"D",x:280,y:240},
+                {id:"E",x:120,y:240}
+            ],
+            connections:[
+                ["A","B"],
+                ["B","C"],
+                ["C","D"],
+                ["D","E"],
+                ["E","A"]
+            ]
+        },
 
-    {
-      name:"The Serpent",
-      color:"#06d6a0",
-      stars:[
-    {id:"A",x:1800,y:600},
-    {id:"B",x:1950,y:700},
-    {id:"C",x:2150,y:600},
-    {id:"D",x:2350,y:800},
-    {id:"E",x:2550,y:700},
-    {id:"F",x:2750,y:900}
-      ],
-      connections:[
-        ["A","B"],
-        ["B","C"],
-        ["C","D"],
-        ["D","E"],
-        ["E","F"]
-      ]
-    }
-  ]
+        {
+            name:"The Crown",
+            color:"#ff66cc",
+            stars:[
+                {id:"A",x:900,y:1800},
+                {id:"B",x:1050,y:1600},
+                {id:"C",x:1200,y:1750},
+                {id:"D",x:1350,y:1600},
+                {id:"E",x:1500,y:1800}
+            ],
+            connections:[
+                ["A","B"],
+                ["B","C"],
+                ["C","D"],
+                ["D","E"]
+            ]
+        },
+
+        {
+            name:"The Serpent",
+            color:"#06d6a0",
+            stars:[
+                {id:"A",x:1800,y:600},
+                {id:"B",x:1950,y:700},
+                {id:"C",x:2150,y:600},
+                {id:"D",x:2350,y:800},
+                {id:"E",x:2550,y:700},
+                {id:"F",x:2750,y:900}
+            ],
+            connections:[
+                ["A","B"],
+                ["B","C"],
+                ["C","D"],
+                ["D","E"],
+                ["E","F"]
+            ]
+        }
+
+    ]
 };
 
 const canvas = document.getElementById("sky");
@@ -119,134 +129,154 @@ window.addEventListener("mousemove",(e)=>{
 
     if(!isDragging) return;
 
-    cameraX -= e.clientX - lastMouseX;
+    cameraX -= (e.clientX - lastMouseX);
+    cameraY -= (e.clientY - lastMouseY);
+
     cameraX = ((cameraX % WORLD_WIDTH) + WORLD_WIDTH) % WORLD_WIDTH;
-    cameraY -= e.clientY - lastMouseY;
 
     lastMouseX = e.clientX;
     lastMouseY = e.clientY;
 
     draw();
 });
-    
+
 function draw(){
 
-const gradient = ctx.createLinearGradient(
-    0,0,
-    canvas.width,canvas.height
-);
+    const gradient = ctx.createLinearGradient(
+        0,0,
+        canvas.width,canvas.height
+    );
 
-gradient.addColorStop(0,"#000814");
-gradient.addColorStop(0.5,"#040b25");
-gradient.addColorStop(1,"#020510");
+    gradient.addColorStop(0,"#000814");
+    gradient.addColorStop(0.5,"#040b25");
+    gradient.addColorStop(1,"#020510");
 
-ctx.fillStyle = gradient;
-ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = gradient;
+    ctx.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
 
-for(let i=0;i<300;i++){
+    for(let i=0;i<300;i++){
 
-    const x=Math.random()*canvas.width;
-    const y=Math.random()*canvas.height;
+        const x = Math.random()*canvas.width;
+        const y = Math.random()*canvas.height;
+        const size = Math.random()*2;
 
-    const size=Math.random()*2;
+        ctx.fillStyle =
+            "rgba(255,255,255," +
+            (Math.random()*0.8) +
+            ")";
 
-    ctx.fillStyle="rgba(255,255,255,"+(Math.random()*0.8)+")";
+        ctx.beginPath();
+        ctx.arc(
+            x,
+            y,
+            size,
+            0,
+            Math.PI*2
+        );
+        ctx.fill();
+    }
 
-    ctx.beginPath();
-    ctx.arc(x,y,size,0,Math.PI*2);
-    ctx.fill();
-}
+    const nebula = ctx.createRadialGradient(
+        canvas.width*0.7,
+        canvas.height*0.3,
+        0,
+        canvas.width*0.7,
+        canvas.height*0.3,
+        300
+    );
+
+    nebula.addColorStop(0,"rgba(80,120,255,0.15)");
+    nebula.addColorStop(0.5,"rgba(120,80,255,0.08)");
+    nebula.addColorStop(1,"rgba(0,0,0,0)");
+
+    ctx.fillStyle = nebula;
+    ctx.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
 
     for(const c of data.constellations){
 
-        const lookup={};
+        const lookup = {};
 
         for(const star of c.stars){
-            lookup[star.id]=star;
+            lookup[star.id] = star;
         }
 
-        ctx.strokeStyle=c.color;
-        ctx.lineWidth=2;
-
-      const offsets = [-WORLD_WIDTH, 0, WORLD_WIDTH];
-        for(const offset of offsets){
-
-        for(const [a,b] of c.connections){
-
-            const s1=lookup[a];
-            const s2=lookup[b];
-
-            ctx.beginPath();
-          ctx.moveTo(
-    s1.x + offset - cameraX,
-    s1.y - cameraY
-);
-
-ctx.lineTo(
-    s2.x + offset - cameraX,
-    s2.y - cameraY
-);
-        }
-            ctx.stroke();
-        }
-        
-const nebula = ctx.createRadialGradient(
-    canvas.width*0.7,
-    canvas.height*0.3,
-    0,
-    canvas.width*0.7,
-    canvas.height*0.3,
-    300
-);
-
-nebula.addColorStop(0,"rgba(80,120,255,0.15)");
-nebula.addColorStop(0.5,"rgba(120,80,255,0.08)");
-nebula.addColorStop(1,"rgba(0,0,0,0)");
-
-ctx.fillStyle=nebula;
-ctx.fillRect(0,0,canvas.width,canvas.height);
-        for(const star of c.stars){
-
-ctx.shadowBlur = 10;
-ctx.shadowColor = "white";
-ctx.fillStyle = "white";
-
-ctx.shadowBlur = 0;
-            
-            ctx.beginPath();
-        for(const offset of offsets){
-
-    ctx.beginPath();
-
-    ctx.arc(
-        star.x + offset - cameraX,
-        star.y - cameraY,
-        5,
-        0,
-        Math.PI*2
-    );
-
-    ctx.fill();
-}
-            ctx.fill();
-        }
-
-        ctx.fillStyle=c.color;
-        ctx.font="16px sans-serif";
+        const offsets = [
+            -WORLD_WIDTH,
+            0,
+            WORLD_WIDTH
+        ];
 
         for(const offset of offsets){
 
-    ctx.fillText(
-        c.name,
-        c.stars[0].x + offset - cameraX,
-        c.stars[0].y - 20 - cameraY
-    );
-}
+            ctx.strokeStyle = c.color;
+            ctx.lineWidth = 2;
+
+            for(const [a,b] of c.connections){
+
+                const s1 = lookup[a];
+                const s2 = lookup[b];
+
+                ctx.beginPath();
+
+                ctx.moveTo(
+                    s1.x + offset - cameraX,
+                    s1.y - cameraY
+                );
+
+                ctx.lineTo(
+                    s2.x + offset - cameraX,
+                    s2.y - cameraY
+                );
+
+                ctx.stroke();
+            }
+
+            for(const star of c.stars){
+
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = "white";
+                ctx.fillStyle = "white";
+
+                ctx.beginPath();
+
+                ctx.arc(
+                    star.x + offset - cameraX,
+                    star.y - cameraY,
+                    5,
+                    0,
+                    Math.PI*2
+                );
+
+                ctx.fill();
+
+                ctx.shadowBlur = 0;
+            }
+
+            ctx.fillStyle = c.color;
+            ctx.font = "16px sans-serif";
+
+            ctx.fillText(
+                c.name,
+                c.stars[0].x + offset - cameraX,
+                c.stars[0].y - 20 - cameraY
+            );
+        }
     }
 }
 
 resize();
 
 </script>
+
 </body>
 </html>
